@@ -81,3 +81,5 @@ class VDeleter
   }
 };
 
+// vim:set et ts=2 sw=2 sts=2:
+
