@@ -13,16 +13,15 @@ top = '.'
 out = 'build'
 
 def options(opt):
-	opt.load('compiler_cxx waf_unit_test')
+	opt.load('compiler_cxx')
 
 def configure(conf):
 	conf.env.MSVC_VERSIONS = ['msvc 14.0']
 	conf.env.MSVC_TARGETS = ['x64']
-	conf.load('compiler_cxx waf_unit_test msvc')
+	conf.load('compiler_cxx msvc')
 	
 	if platform.system() == 'Windows':
 		conf.env.CXXFLAGS = ['/nologo', '/EHsc', '/MD']
-	
 
 def build(bld):
 	my_includes = [
@@ -40,7 +39,7 @@ def build(bld):
 	
 	bld.program(
 	    source    = my_source,
-	    features  = 'cxx cxxprogram test',
+	    features  = 'cxx cxxprogram',
 	    target    = 'vulkan_template',
 	    libpath   = my_libpath,
 	    lib       = my_lib,
@@ -54,10 +53,5 @@ def build(bld):
 	dynamic_lib_local = os.path.abspath("./" + out + "/" + dynamic_lib_name)
 	if not os.path.isfile(dynamic_lib_local):
 		copyfile(my_dynamic_lib, dynamic_lib_local)
-	
-	bld.options.all_tests = True
-	
-	from waflib.Tools import waf_unit_test
-	bld.add_post_fun(waf_unit_test.summary)
 
 # vim:set noet ts=4 sts=4 sw=4 ft=python:

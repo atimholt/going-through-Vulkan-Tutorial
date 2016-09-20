@@ -1,5 +1,7 @@
 /// \file    main.cpp
-/// \author  Tim Holt
+
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -11,8 +13,17 @@
 
 #include <iostream>
 
-int main()
+int main(int argc, char* argv[])
 {
+#ifndef DOCTEST_CONFIG_DISABLE
+  doctest::Context context(argc, argv);
+
+  context.setOption("no-run", true);
+
+  int res = context.run();
+  if (context.shouldExit()) return res;
+#endif
+
   glfwInit();
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
