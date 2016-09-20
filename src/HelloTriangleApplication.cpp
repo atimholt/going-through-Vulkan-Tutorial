@@ -1,6 +1,9 @@
 
 #include "HelloTriangleApplication.hpp"
 
+#include <iostream>
+#include <vector>
+
 const int kWidth  = 800;
 const int kHeight = 600;
 
@@ -63,14 +66,31 @@ void HelloTriangleApplication::createInstance()
   createInfo.enabledLayerCount = 0;
   // ---------------------------------------------
 
+
   VkResult result = vkCreateInstance(&createInfo, nullptr, instance_.replace());
 
   if (vkCreateInstance(&createInfo, nullptr, instance_.replace())
       != VK_SUCCESS) {
     throw std::runtime_error("failed to create instance!");
   }
-}
 
+
+  // Not actually necessary ----------------------
+  // see https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Instance
+
+  uint32_t extensionCount = 0;
+  vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+  std::vector<VkExtensionProperties> extensions(extensionCount);
+  vkEnumerateInstanceExtensionProperties(
+      nullptr, &extensionCount, extensions.data());
+
+  std::cout << "available extensions:" << std::endl;
+
+  for (const auto& extension : extensions) {
+    std::cout << "\t" << extension.extensionName << std::endl;
+  }
+}
 
 // vim:set et ts=2 sw=2 sts=2:
 
