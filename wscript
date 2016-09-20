@@ -35,7 +35,8 @@ def build(bld):
 	
 	my_lib = ['vulkan-1', 'glfw3dll']
 	
-	my_source = ['src/main.cpp']
+	my_source = ['src/main.cpp',
+	    'src/HelloTriangleApplication.cpp']
 	
 	bld.program(
 	    source    = my_source,
