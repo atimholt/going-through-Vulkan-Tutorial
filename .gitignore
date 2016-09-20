@@ -1,0 +1,11 @@
+*.swo
+*.swp
+.*.un~
+.lock-waf*
+.waf*/*
+build/*
+doxys_docs/*
+tags
+tags.lock
+tags.temp
+waf*/*
