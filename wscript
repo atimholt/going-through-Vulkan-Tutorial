@@ -36,6 +36,7 @@ def build(bld):
 	my_lib = ['vulkan-1', 'glfw3dll']
 	
 	my_source = ['src/main.cpp',
+	    'src/ValidationLayer.cpp',
 	    'src/HelloTriangleApplication.cpp']
 	
 	bld.program(

@@ -1,5 +1,6 @@
 
 #include "HelloTriangleApplication.hpp"
+#include "ValidationLayer.hpp"
 
 #include <iostream>
 #include <vector>
@@ -38,6 +39,10 @@ void HelloTriangleApplication::mainLoop()
 
 void HelloTriangleApplication::createInstance()
 {
+  if (enableValidationLayers && !checkValidationLayerSupport()) {
+    throw std::runtime_error("validation layers requested, but not available!");
+  }
+
   // optional ------------------------------------
   VkApplicationInfo appInfo  = {};
   appInfo.sType              = VK_STRUCTURE_TYPE_APPLICATION_INFO;
