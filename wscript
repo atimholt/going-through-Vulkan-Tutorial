@@ -34,7 +34,7 @@ def configure(conf):
 def post(ctx):
 	if ctx.cmd == 'build_debug' or ctx.cmd == 'build':
 		print("\n -- Running Unit tests: --\n")
-		call(['./build/debug/vulkan_template.exe', '-no', '-e'])
+		call(['./build/debug/vulkan_template.exe', '--test'])
 		print("\n -- End Unit tests --\n")
 
 def build(bld):

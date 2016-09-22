@@ -13,6 +13,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <string>
 
 int main(int argc, char* argv[])
 {
@@ -21,6 +22,16 @@ int main(int argc, char* argv[])
   doctest::Context context(argc, argv);
 
   context.setOption("no-run", true);
+
+  context.applyCommandLine(argc, argv);
+
+  using namespace std::literals::string_literals;
+  auto begin_argv = argv + 1;
+  auto end_argv = argv + argc;
+  if (end_argv != std::find(begin_argv, end_argv, "--test"s)) {
+    context.setOption("no-run", false);
+    context.setOption("exit", true);
+  }
 
   res = context.run();
   if (context.shouldExit()) return res;
