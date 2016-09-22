@@ -3,6 +3,7 @@
 import os
 import platform
 from shutil import copyfile
+from subprocess import call
 
 # the following two variables are used by the target "waf dist"
 VERSION='0.0.1'
@@ -30,9 +31,17 @@ def configure(conf):
 	conf.write_config_header('release/config.hpp')
 	# conf.load('compiler_cxx msvc')
 
+def post(ctx):
+	if ctx.cmd == 'build_debug' or ctx.cmd == 'build':
+		print("\n -- Running Unit tests: --\n")
+		call(['./build/debug/vulkan_template.exe', '-no', '-e'])
+		print("\n -- End Unit tests --\n")
+
 def build(bld):
 	if not bld.variant:
 		bld.fatal('Call "waf-light build_debug" or "...build_release".')
+	
+	bld.add_post_fun(post)
 	
 	my_includes = ['.', # build directory, for generated config.hpp
 	    'C:/development_resources/glm/',
@@ -76,9 +85,13 @@ def init(ctx):
 				cmd = name + '_' + x
 				variant = x
 	
-	def buildall(ctx):
-		import waflib.Options
-		for x in ('build_debug', 'build_release'):
-			waflib.Options.commands.insert(0, x)
+	for y in (BuildContext, CleanContext, InstallContext, UninstallContext):
+		class tmp(y):
+			variant = 'debug'
+
+def buildall(ctx):
+	import waflib.Options
+	for x in ('build_debug', 'build_release'):
+		waflib.Options.commands.insert(0, x)
 
 # vim:set noet ts=4 sts=4 sw=4 ft=python:

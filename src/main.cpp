@@ -16,12 +16,6 @@
 
 int main(int argc, char* argv[])
 {
-#ifdef NDEBUG
-  std::cout << "debugging off\n";
-#else
-  std::cout << "debugging on\n";
-#endif
-
   int res{0};
 #ifndef DOCTEST_CONFIG_DISABLE
   doctest::Context context(argc, argv);
