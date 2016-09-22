@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 {
   int res{0};
 #ifndef DOCTEST_CONFIG_DISABLE
-  doctest::Context context(argc, argv);
+  doctest::Context context;
 
   context.setOption("no-run", true);
 
