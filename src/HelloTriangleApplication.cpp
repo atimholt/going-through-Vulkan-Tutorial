@@ -58,6 +58,14 @@ void HelloTriangleApplication::createInstance()
   createInfo.sType                = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
   createInfo.pApplicationInfo     = &appInfo;
 
+  if (enableValidationLayers) {
+    createInfo.enabledLayerCount   = kValidationLayers.size();
+    createInfo.ppEnabledLayerNames = kValidationLayers.data();
+  }
+  else {
+    createInfo.enabledLayerCount = 0;
+  }
+
   // akin to argc & argv
   unsigned int glfwExtensionCount = 0;
   const char** glfwExtensions;

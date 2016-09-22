@@ -15,6 +15,8 @@
 #include <iostream>
 #include <string>
 
+using namespace std::literals::string_literals;
+
 int main(int argc, char* argv[])
 {
   int test_result{0};
@@ -25,9 +27,8 @@ int main(int argc, char* argv[])
 
   context.applyCommandLine(argc, argv);
 
-  using namespace std::literals::string_literals;
   auto begin_argv = argv + 1;
-  auto end_argv = argv + argc;
+  auto end_argv   = argv + argc;
   if (end_argv != std::find(begin_argv, end_argv, "--test"s)) {
     context.setOption("no-run", false);
     context.setOption("exit", true);
