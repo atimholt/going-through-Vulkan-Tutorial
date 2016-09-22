@@ -17,7 +17,7 @@
 
 int main(int argc, char* argv[])
 {
-  int res{0};
+  int test_result{0};
 #ifndef DOCTEST_CONFIG_DISABLE
   doctest::Context context;
 
@@ -33,8 +33,8 @@ int main(int argc, char* argv[])
     context.setOption("exit", true);
   }
 
-  res = context.run();
-  if (context.shouldExit()) return res;
+  test_result = context.run();
+  if (context.shouldExit()) return test_result;
 #endif
   HelloTriangleApplication app;
 
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     return EXIT_FAILURE;
   }
 
-  return EXIT_SUCCESS + res;
+  return EXIT_SUCCESS + test_result;
 }
 
 // vim:set et ts=2 sw=2 sts=2:
