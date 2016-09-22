@@ -3,6 +3,9 @@
 #include "HelloTriangleApplication.hpp"
 #include "VDeleter.hpp"
 
+// waf-generated header
+#include "config.hpp"
+
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
@@ -13,12 +16,19 @@
 
 int main(int argc, char* argv[])
 {
+#ifdef NDEBUG
+  std::cout << "debugging off\n";
+#else
+  std::cout << "debugging on\n";
+#endif
+
+  int res{0};
 #ifndef DOCTEST_CONFIG_DISABLE
   doctest::Context context(argc, argv);
 
   context.setOption("no-run", true);
 
-  int res = context.run();
+  res = context.run();
   if (context.shouldExit()) return res;
 #endif
   HelloTriangleApplication app;

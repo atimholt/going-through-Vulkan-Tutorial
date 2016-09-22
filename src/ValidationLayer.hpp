@@ -1,6 +1,9 @@
 
 #pragma once
 
+// waf-generated header
+#include "config.hpp"
+
 #include <vector>
 
 const std::vector<const char*> kValidationLayers = {
