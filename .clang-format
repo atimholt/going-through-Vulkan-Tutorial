@@ -17,8 +17,6 @@ ColumnLimit: 80
 ReflowComments: true
 AlignTrailingComments: true
 SpacesBeforeTrailingComments: 1
-# I don't think I actually have this doing anything effective right now.
-CommentPragmas: "^(│|▼|▲|└)"
 
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: false
@@ -58,7 +56,7 @@ ConstructorInitializerAllOnOneLineOrOnePerLine: true
 
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: false
-AllowShortBlocksOnASingleLine: true
+AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
 # Choosing "All" does horrible things to the surrounding whitespace. :(
