@@ -1,3 +1,5 @@
+#ifndef HELLO_TRIANGLE_APPLICATION_HPP_IS_INCLUDED
+#define HELLO_TRIANGLE_APPLICATION_HPP_IS_INCLUDED
 
 #include <memory>
 
@@ -19,6 +21,8 @@ class HelloTriangleApplication
   void initVulkan();
   void mainLoop();
 };
+
+#endif // HELLO_TRIANGLE_APPLICATION_HPP_IS_INCLUDED
 
 // vim:set et ts=2 sw=0 sts=0:
 
