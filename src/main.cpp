@@ -14,7 +14,7 @@
 #include <cstdlib>
 #include <ostream>
 
-int main(int argc, char* argv[])
+int main(int argc, char* argv[]) // NOLINT(bugprone-exception-escape)
 {
   ////////////////////////////// Testing Stuff ////
   doctest::Context context;                      //
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
   glm::mat4 matrix;
   glm::vec4 vec;
-  auto test = matrix * vec;
+  auto test = matrix * vec; // NOLINT
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
