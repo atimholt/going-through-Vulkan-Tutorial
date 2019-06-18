@@ -1,6 +1,8 @@
 #ifndef HELLO_TRIANGLE_APPLICATION_HPP_IS_INCLUDED
 #define HELLO_TRIANGLE_APPLICATION_HPP_IS_INCLUDED
 
+#include <vulkan/vulkan.hpp>
+
 #include <memory>
 
 class HelloTriangleApplication
@@ -17,9 +19,12 @@ class HelloTriangleApplication
  private:
   struct WindowHandler;
   std::unique_ptr<WindowHandler> window_handler_;
+  // Must be declared after window_handler_!
+  vk::UniqueInstance vk_instance_;
 
   void initVulkan();
   void mainLoop();
+  void createInstance();
 };
 
 #endif // HELLO_TRIANGLE_APPLICATION_HPP_IS_INCLUDED
