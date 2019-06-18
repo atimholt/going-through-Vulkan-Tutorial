@@ -9,16 +9,16 @@
 #include <ostream>
 #include <stdexcept>
 
-int main(int argc, char* argv[]) // NOLINT(bugprone-exception-escape)
+int main(int argc, char* argv[])
 {
-  ////////////////////////////// Testing Stuff ////
-  doctest::Context context;                      //
-  context.setOption("no-breaks", true);          //
-  context.setOption("no-run", true);             //
-  context.applyCommandLine(argc, argv);          //
-  auto test_results = context.run();             //
-  if (context.shouldExit()) return test_results; //
-  /////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////// Testing Stuff
+  doctest::Context context;
+  context.setOption("no-breaks", true);
+  context.setOption("no-run", true);
+  context.applyCommandLine(argc, argv);
+  auto test_results = context.run();
+  if (context.shouldExit()) return test_results;
+  /////////////////////////////////////////////////////////////////////////////
 
   HelloTriangleApplication app;
 
