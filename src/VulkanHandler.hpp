@@ -7,7 +7,8 @@ struct VulkanHandler
 {
   vk::UniqueInstance vk_instance_;
 
-  void initVulkan();
+  VulkanHandler();
+
   void createInstance();
 };
 

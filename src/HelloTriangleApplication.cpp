@@ -36,7 +36,6 @@ HelloTriangleApplication::~HelloTriangleApplication() = default;
 
 void HelloTriangleApplication::run()
 {
-  vk_handler_.initVulkan();
   mainLoop();
 }
 

@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <vector>
 
-void VulkanHandler::initVulkan()
+VulkanHandler::VulkanHandler()
 {
   createInstance();
 }
