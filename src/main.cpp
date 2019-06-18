@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
   ////////////////////////////// Testing Stuff ////
   doctest::Context context;                      //
   context.setOption("no-breaks", true);          //
+  context.setOption("no-run", true);             //
   context.applyCommandLine(argc, argv);          //
   auto test_results = context.run();             //
   if (context.shouldExit()) return test_results; //
