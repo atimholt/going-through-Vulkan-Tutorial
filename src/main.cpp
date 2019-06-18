@@ -5,6 +5,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
 #include <vulkan/vulkan.hpp>
 
 #include <cstdlib>
