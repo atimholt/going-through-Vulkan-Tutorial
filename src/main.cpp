@@ -5,13 +5,8 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-#include <vulkan/vulkan.hpp>
-
 #include <cstdlib>
-#include <functional>
-#include <iostream>
+#include <ostream>
 #include <stdexcept>
 
 int main(int argc, char* argv[]) // NOLINT(bugprone-exception-escape)
