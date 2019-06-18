@@ -19,6 +19,15 @@ project(VulkanTutorial
     LANGUAGES CXX
     )
 
+option(COMPILE_WITH_TESTS
+    "Build the project using doctest"
+    OFF)
+if(COMPILE_WITH_TESTS)
+  enable_testing()
+else()
+  add_definitions(-DDOCTEST_CONFIG_DISABLE)
+endif()
+
 # While I can't get library searching to work:
 INCLUDE_DIRECTORIES (
     "$ENV{VK_SDK_PATH}/Include"
