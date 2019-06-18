@@ -19,8 +19,7 @@ struct HelloTriangleApplication::WindowHandler
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-    window = glfwCreateWindow(HelloTriangleApplication::k_width,
-        HelloTriangleApplication::k_height, "Vulkan", nullptr, nullptr);
+    window = glfwCreateWindow(k_width, k_height, "Vulkan", nullptr, nullptr);
   }
 
   ~WindowHandler()
