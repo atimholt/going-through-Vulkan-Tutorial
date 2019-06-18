@@ -41,6 +41,8 @@ LINK_DIRECTORIES (
 
 add_executable (vulkan_tutorial
     src/main.cpp
+    src/HelloTriangleApplication.cpp
+    src/HelloTriangleApplication.hpp
     )
 set_property(TARGET vulkan_tutorial PROPERTY CXX_STANDARD 17)
 set_property(TARGET vulkan_tutorial PROPERTY CXX_STANDARD_REQUIRED ON)

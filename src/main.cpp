@@ -1,18 +1,16 @@
 /// \file    main.cpp
 
+#include "HelloTriangleApplication.hpp"
+
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-
-#define GLM_FORCE_RADIANS
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#include <glm/mat4x4.hpp>
-#include <glm/vec4.hpp>
+#include <vulkan/vulkan.hpp>
 
 #include <cstdlib>
-#include <ostream>
+#include <functional>
+#include <iostream>
+#include <stdexcept>
 
 int main(int argc, char* argv[]) // NOLINT(bugprone-exception-escape)
 {
@@ -25,31 +23,18 @@ int main(int argc, char* argv[]) // NOLINT(bugprone-exception-escape)
   if (context.shouldExit()) return test_results; //
   /////////////////////////////////////////////////
 
-  glfwInit();
+  HelloTriangleApplication app;
 
-  glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-  GLFWwindow* window =
-      glfwCreateWindow(800, 600, "Vulkan window", nullptr, nullptr);
-
-  uint32_t extension_count = 0;
-  vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, nullptr);
-
-  std::cout << extension_count << " extensions supported" << std::endl;
-
-  glm::mat4 matrix;
-  glm::vec4 vec;
-  auto test = matrix * vec; // NOLINT
-
-  while (!glfwWindowShouldClose(window)) {
-    glfwPollEvents();
+  try {
+    app.run();
   }
-
-  glfwDestroyWindow(window);
-
-  glfwTerminate();
+  catch (const std::exception& e) {
+    std::cerr << e.what() << "\n";
+    return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS + test_results;
 }
 
-// vim:set et ts=2 sw=2 sts=2:
+// vim:set et ts=2 sw=0 sts=0:
 
