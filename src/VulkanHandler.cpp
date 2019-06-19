@@ -31,20 +31,18 @@ std::vector<const char*> getExtensions()
 
 bool checkValidationLayerSupport()
 {
-  using namespace std;
-
   // set<string> is sorted, and its elements are trivially comparable.
-  set<string> available_layer_names{};
+  std::set<std::string> available_layer_names{};
   for (const auto& layer_properties : vk::enumerateInstanceLayerProperties()) {
     available_layer_names.emplace(layer_properties.layerName);
   }
 
-  set<string> validation_layers_sorted{};
+  std::set<std::string> validation_layers_sorted{};
   for (const auto& layer : VulkanHandler::k_validation_layers) {
     validation_layers_sorted.emplace(layer);
   }
 
-  return includes(
+  return std::includes(
       CWHOLE(available_layer_names), CWHOLE(validation_layers_sorted));
 }
 
