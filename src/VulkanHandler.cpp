@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+// The way I figure, I'm allowed to do ugly things in definition files. Go look
+// where it's used and tell me it isn't cleaner and totally understandable
 #define WHOLE(container) std::begin(container), std::end(container)
 #define CWHOLE(container) std::cbegin(container), std::cend(container)
 
@@ -31,6 +33,7 @@ bool checkValidationLayerSupport()
 {
   using namespace std;
 
+  // set<string> is sorted, and its elements are trivially comparable.
   set<string> available_layer_names{};
   for (const auto& layer_properties : vk::enumerateInstanceLayerProperties()) {
     available_layer_names.emplace(layer_properties.layerName);
