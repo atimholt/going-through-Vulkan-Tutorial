@@ -15,11 +15,6 @@ const std::vector<const char*> VulkanHandler::k_validation_layers{
     "VK_LAYER_KHRONOS_validation"};
 
 
-VulkanHandler::VulkanHandler()
-{
-  createInstance();
-}
-
 std::vector<const char*> getExtensions()
 {
   uint32_t glfw_extension_count{};
@@ -32,34 +27,7 @@ std::vector<const char*> getExtensions()
   return extensions;
 }
 
-void VulkanHandler::createInstance()
-{
-  if (k_enable_validation_layers && !checkValidationLayerSupport()) {
-    throw std::runtime_error("validation layers requested, but not available!");
-  }
-
-  vk::ApplicationInfo app_info{
-      "Hello Triangle",         // pApplicationName
-      VK_MAKE_VERSION(1, 0, 0), // application version
-      "No Engine",              //
-      VK_MAKE_VERSION(1, 0, 0), // engine version
-      VK_API_VERSION_1_0        //
-  };
-
-  auto extensions = getExtensions();
-
-  vk::InstanceCreateInfo create_info{{}, &app_info, 0, {},
-      static_cast<uint32_t>(extensions.size()), extensions.data()};
-  if (k_enable_validation_layers) {
-    create_info.enabledLayerCount =
-        static_cast<uint32_t>(k_validation_layers.size());
-    create_info.ppEnabledLayerNames = k_validation_layers.data();
-  }
-
-  vk_instance_ = vk::createInstanceUnique(create_info);
-}
-
-bool VulkanHandler::checkValidationLayerSupport()
+bool checkValidationLayerSupport()
 {
   using namespace std;
 
@@ -75,6 +43,38 @@ bool VulkanHandler::checkValidationLayerSupport()
 
   return includes(
       CWHOLE(available_layer_names), CWHOLE(validation_layers_sorted));
+}
+
+vk::UniqueInstance createInstance()
+{
+  if (VulkanHandler::k_enable_validation_layers
+      && !checkValidationLayerSupport()) {
+    throw std::runtime_error("validation layers requested, but not available!");
+  }
+
+  vk::ApplicationInfo app_info{
+      "Hello Triangle",         // pApplicationName
+      VK_MAKE_VERSION(1, 0, 0), // application version
+      "No Engine",              //
+      VK_MAKE_VERSION(1, 0, 0), // engine version
+      VK_API_VERSION_1_0        //
+  };
+
+  auto extensions = getExtensions();
+
+  vk::InstanceCreateInfo create_info{{}, &app_info, 0, {},
+      static_cast<uint32_t>(extensions.size()), extensions.data()};
+  if (VulkanHandler::k_enable_validation_layers) {
+    create_info.enabledLayerCount =
+        static_cast<uint32_t>(VulkanHandler::k_validation_layers.size());
+    create_info.ppEnabledLayerNames = VulkanHandler::k_validation_layers.data();
+  }
+
+  return vk::createInstanceUnique(create_info);
+}
+
+VulkanHandler::VulkanHandler() : vk_instance_{createInstance()}
+{
 }
 
 // vim:set et ts=2 sw=0 sts=0:

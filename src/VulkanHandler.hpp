@@ -15,10 +15,6 @@ struct VulkanHandler
   vk::UniqueInstance vk_instance_;
 
   VulkanHandler();
-
-  void createInstance();
-
-  bool checkValidationLayerSupport();
 };
 
 #endif // !VULKAN_HANDLER_HPP_IS_INCLUDED
