@@ -1,21 +1,35 @@
 #include "VulkanHandler.hpp"
 
+// Includes
+//----------
+//   3rd Party Libraries
+//  ---------------------
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+
+//   Standard Libary
+//  -----------------
 
 #include <algorithm>
 #include <set>
 #include <string>
 #include <vector>
 
-// The way I figure, I'm allowed to do ugly things in definition files. Go look
-// where it's used and tell me it isn't cleaner and totally understandable
+// Weird crap (see README.md to see my justification)
+//----------------------------------------------------
+
 #define WHOLE(container) std::begin(container), std::end(container)
 #define CWHOLE(container) std::cbegin(container), std::cend(container)
+
+// Constants
+//-----------
 
 const std::vector<const char*> VulkanHandler::k_validation_layers{
     "VK_LAYER_KHRONOS_validation"};
 
+// Method Definitions
+//--------------------
 
 vk::UniqueInstance createInstance();
 // is used by:
