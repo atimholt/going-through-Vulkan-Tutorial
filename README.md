@@ -20,3 +20,16 @@ This project is distributed under the MIT license, copyright 2016 and 2019 Tim H
 doctest.h is copyright 2016 Viktor Kirilov, and is under the MIT license. It can be found at https://github.com/onqtam/doctest/ .
 
 This project contains no licensed code from the waf project, but more information can be found at https://github.com/waf-project/waf .
+
+Notes on Code Structure
+=======================
+
+Regarding definition (.cpp) files:
+
+Local-only helper functions are forward declared immediately before the functions in which they are used. Hint: it's a local-only helper iff it is global scope in a definition file. This may involve multiple declarations of the same function.
+
+Definitions are not (necessarily) in a strict order based on dependency, because evolving code changes the dependency order of function calls. However, all header-declared functions are defined before any local-only function definitions, and newly implemented functions will be defined somewhere after they are used, to at least roughly show "primacy".
+
+New function definition placement will be based as close to per-level ordering as may be allowed without moving anything else around. (see https://en.wikipedia.org/wiki/Tree_(data_structure)#Per-level_ordering). I may occasionally re-order to strict per-level ordering in a commit made for that purpose, but shuffling code around in repo-tracked code is a Very Bad Thing™. I'll only do it when I can no longer resist how beautifully logical such a strict ordering would be.
+
+I'm also giving myself permission to do some truly ugly things in definition files, since ugly code can't hurt anyone from there.
