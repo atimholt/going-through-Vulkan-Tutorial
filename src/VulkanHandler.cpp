@@ -21,11 +21,12 @@
 
 #define WHOLE(container) std::begin(container), std::end(container)
 #define CWHOLE(container) std::cbegin(container), std::cend(container)
+using namespace std;
 
 // Constants
 //-----------
 
-const std::vector<const char*> VulkanHandler::k_validation_layers{
+const vector<const char*> VulkanHandler::k_validation_layers{
     "VK_LAYER_KHRONOS_validation"};
 
 // Method Definitions
@@ -41,7 +42,7 @@ VulkanHandler::VulkanHandler() : vk_instance_{createInstance()}
 //---------
 
 bool checkValidationLayerSupport();
-std::vector<const char*> getExtensions();
+vector<const char*> getExtensions();
 // are used by:
 vk::UniqueInstance createInstance()
 {
@@ -73,12 +74,12 @@ vk::UniqueInstance createInstance()
 bool checkValidationLayerSupport()
 {
   // set<string> is sorted, and its elements are trivially comparable.
-  std::set<std::string> available_layer_names{};
+  std::set<string> available_layer_names{};
   for (const auto& layer_properties : vk::enumerateInstanceLayerProperties()) {
     available_layer_names.emplace(layer_properties.layerName);
   }
 
-  std::set<std::string> validation_layers_sorted{};
+  std::set<string> validation_layers_sorted{};
   for (const auto& layer : VulkanHandler::k_validation_layers) {
     validation_layers_sorted.emplace(layer);
   }
@@ -87,14 +88,14 @@ bool checkValidationLayerSupport()
       CWHOLE(available_layer_names), CWHOLE(validation_layers_sorted));
 }
 
-std::vector<const char*> getExtensions()
+vector<const char*> getExtensions()
 {
   uint32_t glfw_extension_count{};
   const char** glfw_extensions =
       glfwGetRequiredInstanceExtensions(&glfw_extension_count);
 
-  std::vector<const char*> extensions(glfw_extension_count);
-  std::copy_n(glfw_extensions, glfw_extension_count, std::begin(extensions));
+  vector<const char*> extensions(glfw_extension_count);
+  std::copy_n(glfw_extensions, glfw_extension_count, begin(extensions));
 
   return extensions;
 }
