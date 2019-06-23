@@ -12,6 +12,7 @@
 //  -----------------
 
 #include <algorithm>
+#include <cstring>
 #include <set>
 #include <string>
 #include <vector>
@@ -26,8 +27,15 @@ using namespace std;
 // Constants
 //-----------
 
-const vector<const char*> VulkanHandler::k_validation_layers{
-    "VK_LAYER_KHRONOS_validation"};
+const vector<const char*> VulkanHandler::k_validation_layers = []() {
+  const vector<const char*> value{"VK_LAYER_KHRONOS_validation"};
+
+  // Easier to compare. Same name makes the assertion fail output more readable.
+  vector<string> k_validation_layers(CWHOLE(value));
+  assert(std::is_sorted(CWHOLE(k_validation_layers)));
+
+  return value;
+}();
 
 // Method Definitions
 //--------------------
@@ -79,13 +87,8 @@ bool checkValidationLayerSupport()
     available_layer_names.emplace(layer_properties.layerName);
   }
 
-  std::set<string> validation_layers_sorted{};
-  for (const auto& layer : VulkanHandler::k_validation_layers) {
-    validation_layers_sorted.emplace(layer);
-  }
-
-  return std::includes(
-      CWHOLE(available_layer_names), CWHOLE(validation_layers_sorted));
+  return std::includes(CWHOLE(available_layer_names),
+      CWHOLE(VulkanHandler::k_validation_layers));
 }
 
 vector<const char*> getExtensions()
