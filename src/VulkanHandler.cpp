@@ -8,11 +8,12 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#include "doctest.h"
+
 //   Standard Libary
 //  -----------------
 
 #include <algorithm>
-#include <cstring>
 #include <set>
 #include <string>
 #include <vector>
@@ -27,15 +28,16 @@ using namespace std;
 // Constants
 //-----------
 
-const vector<const char*> VulkanHandler::k_validation_layers = []() {
-  const vector<const char*> value{"VK_LAYER_KHRONOS_validation"};
-
-  // Easier to compare. Same name makes the assertion fail output more readable.
-  vector<string> k_validation_layers(CWHOLE(value));
-  assert(std::is_sorted(CWHOLE(k_validation_layers)));
-
-  return value;
-}();
+const vector<const char*> VulkanHandler::k_validation_layers{
+    "VK_LAYER_KHRONOS_validation"};
+TEST_CASE("k_validation_layers is sorted")
+{
+  // Easier to compare.
+  vector<string> k_validation_layers(
+      CWHOLE(VulkanHandler::k_validation_layers));
+  // Same name makes the assertion fail output more readable.
+  CHECK(std::is_sorted(CWHOLE(k_validation_layers)));
+}
 
 // Method Definitions
 //--------------------

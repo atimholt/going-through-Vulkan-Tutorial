@@ -22,6 +22,7 @@ project(VulkanTutorial
 option(COMPILE_WITH_TESTS
     "Build the project using doctest"
     OFF)
+
 if(COMPILE_WITH_TESTS)
   enable_testing()
 else()
@@ -43,6 +44,7 @@ add_executable (vulkan_tutorial
     src/main.cpp
     src/HelloTriangleApplication.cpp src/HelloTriangleApplication.hpp
     src/VulkanHandler.cpp            src/VulkanHandler.hpp
+                                     src/doctest.h
     )
 set_property(TARGET vulkan_tutorial PROPERTY CXX_STANDARD 17)
 set_property(TARGET vulkan_tutorial PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -54,9 +56,21 @@ TARGET_LINK_LIBRARIES (vulkan_tutorial
 
 # For certain editor plugins that need more information about compilation
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+
+set(testCommand "")
+if(COMPILE_WITH_TESTS)
+    #set (testCommand "$<TARGET_FILE:vulkan_tutorial>")
+    #set (testArgs --dt-exit=true --dt-no-run=false)
+    set(testCommand $<TARGET_FILE:vulkan_tutorial> --run-as-tests)
+else()
+    set(testCommand $<TARGET_FILE:vulkan_tutorial> --do-nothing)
+endif()
+
 add_custom_command(TARGET vulkan_tutorial
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json ${CMAKE_SOURCE_DIR}/compile_commands.json
+    COMMAND "$<1:${testCommand}>"
+    COMMAND_EXPAND_LISTS
     )
 
 # TODO: Add tests and install targets if needed.
