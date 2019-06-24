@@ -24,6 +24,26 @@
 #define WHOLE(container) std::begin(container), std::end(container)
 #define CWHOLE(container) std::cbegin(container), std::cend(container)
 using namespace std;
+using namespace doctest;
+
+// Unit test forward setup
+//-------------------------
+
+struct StubGLFWRAII
+{
+  // clang-format off
+  StubGLFWRAII() { glfwInit(); }
+  ~StubGLFWRAII() { glfwTerminate(); }
+  // clang-format on
+};
+
+TEST_SUITE("requires glfwInit")
+{
+  // Note: GLFW is all global scope. Calling GLFW functions just requires
+  // glfwInit() to be called somewhere.
+  // That is, this object is not actually used anywhere.
+  StubGLFWRAII glfw_raii{};
+}
 
 // Constants
 //-----------
@@ -46,6 +66,11 @@ vk::UniqueInstance createInstance();
 // is used by:
 VulkanHandler::VulkanHandler() : vk_instance_{createInstance()}
 {
+}
+TEST_CASE("VulkanHandler()" * test_suite("requires glfwInit"))
+{ //                          ^ works in different suites. How do suites work?
+  VulkanHandler a_vulkan_handler{};
+  CHECK(a_vulkan_handler.vk_instance_);
 }
 
 // Helpers
@@ -80,6 +105,10 @@ vk::UniqueInstance createInstance()
 
   return vk::createInstanceUnique(create_info);
 }
+TEST_CASE("createInstance()" * test_suite("requires glfwInit"))
+{
+  CHECK(createInstance());
+}
 
 bool checkValidationLayerSupport()
 {
@@ -92,6 +121,10 @@ bool checkValidationLayerSupport()
   return std::includes(CWHOLE(available_layer_names),
       CWHOLE(VulkanHandler::k_validation_layers));
 }
+TEST_CASE("checkValidationLayerSupport()")
+{
+  CHECK(checkValidationLayerSupport());
+}
 
 vector<const char*> getExtensions()
 {
@@ -99,10 +132,19 @@ vector<const char*> getExtensions()
   const char** glfw_extensions =
       glfwGetRequiredInstanceExtensions(&glfw_extension_count);
 
+  if (0 == glfw_extension_count) {
+    throw std::runtime_error(
+        "GLFW extensions required count is 0! Has glfwInit() been called?");
+  }
+
   vector<const char*> extensions(glfw_extension_count);
   std::copy_n(glfw_extensions, glfw_extension_count, begin(extensions));
 
   return extensions;
+}
+TEST_CASE("getExtensions()" * test_suite("requires glfwInit"))
+{
+  CHECK(getExtensions().size() > 0);
 }
 
 // vim:set et ts=2 sw=0 sts=0:
