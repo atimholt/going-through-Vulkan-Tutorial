@@ -21,10 +21,18 @@
 // Weird crap (see README.md to see my justification)
 //----------------------------------------------------
 
-#define WHOLE(container) std::begin(container), std::end(container)
-#define CWHOLE(container) std::cbegin(container), std::cend(container)
-using namespace std;
-using namespace doctest;
+using std::string;
+using std::vector;
+
+using std::begin;
+using std::end;
+#define WHOLE(container) begin(container), end(container)
+
+using std::cbegin;
+using std::cend;
+#define CWHOLE(container) cbegin(container), cend(container)
+
+using doctest::test_suite;
 
 // Unit test forward setup
 //-------------------------
@@ -52,11 +60,14 @@ const vector<const char*> VulkanHandler::k_validation_layers{
     "VK_LAYER_KHRONOS_validation"};
 TEST_CASE("k_validation_layers is sorted")
 {
-  // Easier to compare.
-  vector<string> k_validation_layers(
-      CWHOLE(VulkanHandler::k_validation_layers));
-  // Same name makes the assertion fail output more readable.
-  CHECK(std::is_sorted(CWHOLE(k_validation_layers)));
+  // makes doctest CHECK output more readable
+  using std::is_sorted;
+
+  // strings -> less code to compare elements.
+  // Same name makes doctest CHECK output more readable.
+  vector<string> k_validation_layers(WHOLE(VulkanHandler::k_validation_layers));
+
+  CHECK(is_sorted(CWHOLE(k_validation_layers)));
 }
 
 // Method Definitions

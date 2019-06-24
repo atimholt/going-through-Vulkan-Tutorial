@@ -38,9 +38,13 @@ New function definition placement will be based as close to per-level ordering a
 
 I'm also giving myself permission to do some truly ugly things in definition files, since ugly code can't hurt anyone from there. Using `using namespace std;` probably isn't too unusual for a definition file, but I'll probably only use it where I think it makes things clearer. I'll leave `std::` on std algorithms and some std containers, for example. What's less usual is some questionable macro usage, and whatever other weird crap I can come up with that I think makes actual definitions clearer, but would never be wise to put in a header.
 
-### using namespace std
+### Using Statements
 
-`using namespace std;`, of course, should NEVER EVER go in a header, but proper use in a definition file makes some things clearer. The widespread use of std::vector makes 'vector' without 'std::' unambiguous. 'begin()' and 'end()' are almost always used in contexts where it's obvious that they're generating an iterator, and 'string' is going to be a string class in any context, and whether it's even std::string is mostly moot in practice (though that's the usual assumption).
+`using namespace std;`, of course, should NEVER EVER go in a header, but proper use in a definition file makes some things clearer. However, `using namespace` almost always carries side-effects. Using `using {namespace}::{identifier}` makes intentions and reasoning much clearer, and does not bring anything into scope that was not intended.
+
+For some statements (e.g. anything in global scope, i.e. helper functions and local-only constants in definition files--or when it's a widely useful identifier with obvious meaning), it makes sense to put such using statements near the top of the file. Some using statements might make more sense placed in a local function/method definition. This will happen when it makes things clearer in one particular use, but not in every use everywhere in the file.
+
+The widespread use of std::vector makes 'vector' without 'std::' unambiguous. 'begin()' and 'end()' are almost always used in contexts where it's obvious that they're generating an iterator, and 'string' is going to be a string class in any context, and whether it's even std::string is mostly moot in practice (though that's the usual assumption).
 
 Something like std::set would probably be fine without the 'std::' prefix, but it's not used as often as something like 'vector', and it's also interpretable as a common English verb. Some std algorithms are obvious enough (like 'sort'), but there are a lot of them, and most people can't be expected to know them all. Even if the name of the algorithm makes its meaning obvious, emphasizing its connection to the STL gives the brain something to latch onto when trying to read the code. I still might indulge in a couple 'bare' std algorithms, like sort.
 
