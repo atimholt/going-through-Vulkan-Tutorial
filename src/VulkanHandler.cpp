@@ -62,7 +62,7 @@ TEST_CASE("k_validation_layers is sorted")
 {
   // strings -> less code to compare elements.
   // Same name makes doctest CHECK output more readable.
-  vector<string> k_validation_layers(all(VulkanHandler::k_validation_layers));
+  vector<string> k_validation_layers{all(VulkanHandler::k_validation_layers)};
 
   CHECK(ranges::is_sorted(k_validation_layers));
 }
