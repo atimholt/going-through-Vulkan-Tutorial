@@ -34,6 +34,7 @@ INCLUDE_DIRECTORIES (
     "$ENV{VK_SDK_PATH}/Include"
     C:/development_resources/glfw/glfw-3.3.bin.WIN64/include
     C:/development_resources/glm
+    C:/development_resources/range-v3/include
     )
 LINK_DIRECTORIES (
     "$ENV{VK_SDK_PATH}/Lib"

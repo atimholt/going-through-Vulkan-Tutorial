@@ -10,6 +10,11 @@
 
 #include "doctest.h"
 
+//   Experimental Standard Library
+//  -------------------------------
+
+#include <range/v3/all.hpp>
+
 //   Standard Libary
 //  -----------------
 
@@ -18,19 +23,14 @@
 #include <string>
 #include <vector>
 
-// Weird crap (see README.md to see my justification)
-//----------------------------------------------------
+// Global Using Statements/Namespace Aliases
+//-------------------------------------------
+
+using ranges::view::all;
+namespace view = ranges::view;
 
 using std::string;
 using std::vector;
-
-using std::begin;
-using std::end;
-#define WHOLE(container) begin(container), end(container)
-
-using std::cbegin;
-using std::cend;
-#define CWHOLE(container) cbegin(container), cend(container)
 
 using doctest::test_suite;
 
@@ -60,14 +60,11 @@ const vector<const char*> VulkanHandler::k_validation_layers{
     "VK_LAYER_KHRONOS_validation"};
 TEST_CASE("k_validation_layers is sorted")
 {
-  // makes doctest CHECK output more readable
-  using std::is_sorted;
-
   // strings -> less code to compare elements.
   // Same name makes doctest CHECK output more readable.
-  vector<string> k_validation_layers(WHOLE(VulkanHandler::k_validation_layers));
+  vector<string> k_validation_layers(all(VulkanHandler::k_validation_layers));
 
-  CHECK(is_sorted(CWHOLE(k_validation_layers)));
+  CHECK(ranges::is_sorted(k_validation_layers));
 }
 
 // Method Definitions
@@ -129,8 +126,8 @@ bool checkValidationLayerSupport()
     available_layer_names.emplace(layer_properties.layerName);
   }
 
-  return std::includes(CWHOLE(available_layer_names),
-      CWHOLE(VulkanHandler::k_validation_layers));
+  return ranges::includes(
+      available_layer_names, VulkanHandler::k_validation_layers);
 }
 TEST_CASE("checkValidationLayerSupport()")
 {
@@ -148,8 +145,8 @@ vector<const char*> getExtensions()
         "GLFW extensions required count is 0! Has glfwInit() been called?");
   }
 
-  vector<const char*> extensions(glfw_extension_count);
-  std::copy_n(glfw_extensions, glfw_extension_count, begin(extensions));
+  vector<const char*> extensions{
+      view::counted(glfw_extensions, glfw_extension_count)};
 
   return extensions;
 }
