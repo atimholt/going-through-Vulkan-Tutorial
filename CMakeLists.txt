@@ -45,6 +45,7 @@ add_executable (vulkan_tutorial
     src/main.cpp
     src/HelloTriangleApplication.cpp src/HelloTriangleApplication.hpp
     src/VulkanHandler.cpp            src/VulkanHandler.hpp
+    src/ValidationLayerHelpers.cpp   src/ValidationLayerHelpers.hpp
                                      src/doctest.h
     )
 set_property(TARGET vulkan_tutorial PROPERTY CXX_STANDARD 17)

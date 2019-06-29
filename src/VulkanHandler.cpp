@@ -2,6 +2,12 @@
 
 // Includes
 //----------
+
+//   My Includes
+//  -------------
+
+#include "ValidationLayerHelpers.hpp"
+
 //   3rd Party Libraries
 //  ---------------------
 
@@ -53,20 +59,6 @@ TEST_SUITE("requires glfwInit")
   StubGLFWRAII glfw_raii{};
 }
 
-// Constants
-//-----------
-
-const vector<const char*> VulkanHandler::k_validation_layers{
-    "VK_LAYER_KHRONOS_validation"};
-TEST_CASE("k_validation_layers is sorted")
-{
-  // strings -> less code to compare elements.
-  // Same name makes doctest CHECK output more readable.
-  vector<string> k_validation_layers{all(VulkanHandler::k_validation_layers)};
-
-  CHECK(ranges::is_sorted(k_validation_layers));
-}
-
 // Method Definitions
 //--------------------
 
@@ -84,13 +76,11 @@ TEST_CASE("VulkanHandler()" * test_suite("requires glfwInit"))
 // Helpers
 //---------
 
-bool checkValidationLayerSupport();
 vector<const char*> getExtensions();
-// are used by:
+// is used by:
 vk::UniqueInstance createInstance()
 {
-  if (VulkanHandler::k_enable_validation_layers
-      && !checkValidationLayerSupport()) {
+  if (v_layer::k_enable && !v_layer::checkSupport()) {
     throw std::runtime_error("validation layers requested, but not available!");
   }
 
@@ -105,10 +95,11 @@ vk::UniqueInstance createInstance()
 
   vk::InstanceCreateInfo create_info{{}, &app_info, 0, {},
       static_cast<uint32_t>(extensions.size()), extensions.data()};
-  if (VulkanHandler::k_enable_validation_layers) {
+
+  if (v_layer::k_enable) {
     create_info.enabledLayerCount =
-        static_cast<uint32_t>(VulkanHandler::k_validation_layers.size());
-    create_info.ppEnabledLayerNames = VulkanHandler::k_validation_layers.data();
+        static_cast<uint32_t>(v_layer::k_layers.size());
+    create_info.ppEnabledLayerNames = v_layer::k_layers.data();
   }
 
   return vk::createInstanceUnique(create_info);
@@ -116,22 +107,6 @@ vk::UniqueInstance createInstance()
 TEST_CASE("createInstance()" * test_suite("requires glfwInit"))
 {
   CHECK(createInstance());
-}
-
-bool checkValidationLayerSupport()
-{
-  // set<string> is sorted, and its elements are trivially comparable.
-  std::set<string> available_layer_names{};
-  for (const auto& layer_properties : vk::enumerateInstanceLayerProperties()) {
-    available_layer_names.emplace(layer_properties.layerName);
-  }
-
-  return ranges::includes(
-      available_layer_names, VulkanHandler::k_validation_layers);
-}
-TEST_CASE("checkValidationLayerSupport()")
-{
-  CHECK(checkValidationLayerSupport());
 }
 
 vector<const char*> getExtensions()
