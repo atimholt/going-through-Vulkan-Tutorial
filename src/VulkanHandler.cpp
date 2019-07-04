@@ -65,9 +65,11 @@ TEST_CASE("initialize suite" * test_suite("requires glfwInit"))
 // Method Definitions
 //--------------------
 
+namespace cpp_local {
 vk::UniqueInstance createInstance();
+}
 // is used by:
-VulkanHandler::VulkanHandler() : vk_instance_{createInstance()}
+VulkanHandler::VulkanHandler() : vk_instance_{cpp_local::createInstance()}
 {
 }
 TEST_CASE("VulkanHandler()" * test_suite("requires glfwInit"))
@@ -76,8 +78,10 @@ TEST_CASE("VulkanHandler()" * test_suite("requires glfwInit"))
   CHECK(a_vulkan_handler.vk_instance_);
 }
 
-// Helpers
-//---------
+//--------------------
+// Method Definitions
+
+namespace cpp_local {
 
 vector<const char*> getExtensions();
 // is used by:
@@ -132,6 +136,8 @@ TEST_CASE("getExtensions()" * test_suite("requires glfwInit"))
 {
   CHECK(getExtensions().size() > 0);
 }
+
+} // namespace cpp_local
 
 // vim:set et ts=2 sw=0 sts=0:
 
