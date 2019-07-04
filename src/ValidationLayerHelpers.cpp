@@ -21,6 +21,7 @@
 //   Standard Libary
 //  -----------------
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -53,6 +54,35 @@ TEST_CASE("k_layers is sorted")
 
 // Functions
 //-----------
+
+VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+    VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
+    VkDebugUtilsMessageTypeFlagsEXT message_type,
+    const VkDebugUtilsMessengerCallbackDataEXT* p_callback_data,
+    void* p_user_data);
+// is used by
+vk::DebugUtilsMessengerCreateInfoEXT createDebugMessengerCreateInfo()
+{
+  return {{},
+      vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose
+          | vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning
+          | vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
+      vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral
+          | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation
+          | vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
+      &(v_layer::debugCallback)};
+}
+
+VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+    VkDebugUtilsMessageSeverityFlagBitsEXT /*message_severity*/,
+    VkDebugUtilsMessageTypeFlagsEXT /*message_type*/,
+    const VkDebugUtilsMessengerCallbackDataEXT* p_callback_data,
+    void* /*p_user_data*/)
+{
+  std::cerr << "validation layer: " << p_callback_data->pMessage << '\n';
+
+  return VK_FALSE;
+}
 
 bool checkSupport()
 {

@@ -1,8 +1,6 @@
 #ifndef VALIDATION_LAYER_HELPERS_HPP_IS_INCLUDED
 #define VALIDATION_LAYER_HELPERS_HPP_IS_INCLUDED
 
-// Perhaps don't include in a header (though it's not like I'm not going to
-// use std::vector elsewhere)
 #include <vector>
 
 namespace v_layer {
@@ -12,9 +10,9 @@ const std::vector<const char*> k_layers{"VK_LAYER_KHRONOS_validation"};
 bool checkSupport();
 
 #ifdef NDEBUG
-static const bool k_enable = false;
+static const bool k_enabled = false;
 #else
-static const bool k_enable = true;
+static const bool k_enabled = true;
 #endif
 
 } // namespace v_layer

@@ -38,7 +38,9 @@ namespace view = ranges::view;
 using std::string;
 using std::vector;
 
+#ifndef DOCTEST_CONFIG_DISABLE
 using doctest::test_suite;
+#endif
 
 // Unit test forward setup
 //-------------------------
@@ -51,12 +53,13 @@ struct StubGLFWRAII
   // clang-format on
 };
 
-TEST_SUITE("requires glfwInit")
+TEST_CASE("initialize suite" * test_suite("requires glfwInit"))
 {
   // Note: GLFW is all global scope. Calling GLFW functions just requires
   // glfwInit() to be called somewhere.
   // That is, this object is not actually used anywhere.
-  StubGLFWRAII glfw_raii{};
+  static StubGLFWRAII glfw_raii{};
+  // static so it doesn’t repeatedly construct and destruct.
 }
 
 // Method Definitions
@@ -68,7 +71,7 @@ VulkanHandler::VulkanHandler() : vk_instance_{createInstance()}
 {
 }
 TEST_CASE("VulkanHandler()" * test_suite("requires glfwInit"))
-{ //                          ^ works in different suites. How do suites work?
+{
   VulkanHandler a_vulkan_handler{};
   CHECK(a_vulkan_handler.vk_instance_);
 }
@@ -80,7 +83,7 @@ vector<const char*> getExtensions();
 // is used by:
 vk::UniqueInstance createInstance()
 {
-  if (v_layer::k_enable && !v_layer::checkSupport()) {
+  if (v_layer::k_enabled && !v_layer::checkSupport()) {
     throw std::runtime_error("validation layers requested, but not available!");
   }
 
@@ -96,7 +99,7 @@ vk::UniqueInstance createInstance()
   vk::InstanceCreateInfo create_info{{}, &app_info, 0, {},
       static_cast<uint32_t>(extensions.size()), extensions.data()};
 
-  if (v_layer::k_enable) {
+  if (v_layer::k_enabled) {
     create_info.enabledLayerCount =
         static_cast<uint32_t>(v_layer::k_layers.size());
     create_info.ppEnabledLayerNames = v_layer::k_layers.data();
